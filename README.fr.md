@@ -1,0 +1,60 @@
+# Ml Interview Questions
+
+[English](README.md) | **Français** | [Español](README.es.md) | [中文](README.zh-CN.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
+
+Questions d'entretien ML/IA avec réponses types
+
+_Le contenu détaillé (listes, liens, descriptions) est en anglais pour rester maintenable — les sections ci-dessous te guident._
+
+## 🎯 ML & AI interview Q&A
+
+### Fundamentals
+
+**Bias/variance tradeoff?**
+Underfit = high bias (too simple). Overfit = high variance (memorizes noise). The skill is finding the middle — regularization, more data, or simpler/complexer models.
+
+**Precision vs recall?**
+Precision: of what I flagged, how much was right. Recall: of what was right, how much I found. Fraud detection favors recall; spam filters favor precision.
+
+**Explain overfitting and 4 ways to fight it.**
+More data · regularization (L1/L2, dropout) · early stopping · simpler model. Plus: proper train/test split hygiene.
+
+**What's a confusion matrix?**
+TP/FP/TN/FN grid — the source of precision, recall, F1.
+
+### Deep learning
+
+**Why transformers beat RNNs?**
+Attention = parallelizable + long-range dependencies without vanishing gradient over distance. RNNs processed sequentially; transformers attend globally.
+
+**What is LoRA?**
+Low-rank adaptation — fine-tunes small injected matrices instead of the whole model: cheap, fast, composable adapters.
+
+**RLHF?**
+Reward model trained on human preferences → RL (or DPO) aligns the LLM to them.
+
+### LLM-specific
+
+**Temperature / top-p / top-k?**
+Sampling controls: temperature flattens/sharpens the distribution; top-p (nucleus) keeps the smallest probable set; top-k keeps k options. Lower = more deterministic.
+
+**RAG vs fine-tuning?**
+RAG = give the model the answer's context at query time (updatable, cheap). FT = bake knowledge in (stable, expensive, risks forgetting). Often combined.
+
+**Hallucination — why and how to reduce?**
+Models predict plausible tokens, not truth. Reduce via RAG, constrained output, citations, low temperature, and "say 'I don't know' when unsure" prompts.
+
+### Practical
+
+**Your model is 99% accurate on imbalanced fraud data. Problem?**
+Accuracy is meaningless at 1% positives — check precision/recall/AUPRC, not accuracy.
+
+**Data leakage?**
+Information from the future/test set leaking into training — sneaky via preprocessing (scaling before split) or duplicated records.
+
+---
+## Contribuer
+
+Les pull requests sont les bienvenues : ouvre une PR, elle sera relue et fusionnée. Maintenu par [aixisstudio](https://github.com/aixisstudio), auteur de [Snitch](https://github.com/aixisstudio/Snitch), pare-feu applicatif open source.
+
+## Licence: MIT
