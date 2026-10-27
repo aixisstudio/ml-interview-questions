@@ -52,6 +52,34 @@ Accuracy is meaningless at 1% positives — check precision/recall/AUPRC, not ac
 **Data leakage?**
 Information from the future/test set leaking into training — sneaky via preprocessing (scaling before split) or duplicated records.
 
+## 🧪 Applied ML scenario questions
+
+**"Model accuracy dropped 10% overnight in prod. Debug."**
+→ Check data drift first (input distribution), then label pipeline changes, then a recent deploy. Add monitoring on feature distributions.
+
+**"How do you handle 1% positive rate?"**
+→ Don't use accuracy. PR-AUC, class weights, resampling, threshold tuning, cost-sensitive losses. Anomaly-detection framing sometimes wins.
+
+**"Train/val is fine but prod fails. Why?"**
+→ Train/serve skew: feature pipeline differences, label leakage in training, or time-based drift. Shadow-deploy to compare.
+
+## 🧮 Quick-fire theory
+
+| Q | A |
+|---|---|
+| Bias-variance tradeoff? | Simple models underfit (bias), complex overfit (variance) |
+| Why softmax? | Differentiable argmax → probabilities |
+| L1 vs L2? | L1 → sparse weights; L2 → small weights |
+| What is dropout? | Random deactivation → ensemble effect |
+| Why normalize inputs? | Gradient symmetry → faster convergence |
+
+## 🤖 LLM interview questions (2025)
+
+- How do you evaluate an LLM app? → Golden sets, LLM-judge, human evals
+- When fine-tune vs RAG? → RAG for facts, FT for style/format
+- What is RLHF? → Reward-model + PPO preference tuning
+- How to cut inference cost? → Quantize, distill, cache, smaller models
+
 ---
 ## Contribuir
 
