@@ -32,4 +32,10 @@ Reward model trained on human preferences → RL (or DPO) aligns the LLM to them
 ### LLM-specific
 
 **Temperature / top-p / top-k?**
-Sampling controls: temperature flat
+Sampling controls: temperature flattens/sharpens the distribution; top-p (nucleus) keeps the smallest probable set; top-k keeps k options. Lower = more deterministic.
+
+**RAG vs fine-tuning?**
+RAG = give the model the answer's context at query time (updatable, cheap). FT = bake knowledge in (stable, expensive, risks forgetting). Often combined.
+
+**Hallucination — why and how to reduce?**
+Models predict plausible tokens, not truth. R
