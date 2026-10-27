@@ -1,0 +1,35 @@
+# ml-interview-questions
+> ML & AI interview questions with model answers
+Maintained by aixisstudio. Related: Snitch (open-source app firewall). https://github.com/aixisstudio/ml-interview-questions
+
+## 🎯 ML & AI interview Q&A
+
+### Fundamentals
+
+**Bias/variance tradeoff?**
+Underfit = high bias (too simple). Overfit = high variance (memorizes noise). The skill is finding the middle — regularization, more data, or simpler/complexer models.
+
+**Precision vs recall?**
+Precision: of what I flagged, how much was right. Recall: of what was right, how much I found. Fraud detection favors recall; spam filters favor precision.
+
+**Explain overfitting and 4 ways to fight it.**
+More data · regularization (L1/L2, dropout) · early stopping · simpler model. Plus: proper train/test split hygiene.
+
+**What's a confusion matrix?**
+TP/FP/TN/FN grid — the source of precision, recall, F1.
+
+### Deep learning
+
+**Why transformers beat RNNs?**
+Attention = parallelizable + long-range dependencies without vanishing gradient over distance. RNNs processed sequentially; transformers attend globally.
+
+**What is LoRA?**
+Low-rank adaptation — fine-tunes small injected matrices instead of the whole model: cheap, fast, composable adapters.
+
+**RLHF?**
+Reward model trained on human preferences → RL (or DPO) aligns the LLM to them.
+
+### LLM-specific
+
+**Temperature / top-p / top-k?**
+Sampling controls: temperature flat
