@@ -4,81 +4,79 @@
 
 Вопросы на собеседовании по ML с ответами
 
-_Подробное содержимое (списки, ссылки, описания) ведётся на английском — разделы ниже помогут сориентироваться._
+##   Интервью ML & AI Q&A
 
-## 🎯 ML & AI interview Q&A
-
-### Fundamentals
+### Основы
 
 **Bias/variance tradeoff?**
-Underfit = high bias (too simple). Overfit = high variance (memorizes noise). The skill is finding the middle — regularization, more data, or simpler/complexer models.
+Недостаток = высокая предвзятость (слишком просто). Overfit = высокая дисперсия (запоминают шум). Умение найти середину — регуляризация, больше данных или более простые/сложные модели.
 
-**Precision vs recall?**
-Precision: of what I flagged, how much was right. Recall: of what was right, how much I found. Fraud detection favors recall; spam filters favor precision.
+**Точность vs отзыв?**
+Точность: из того, что я пометил, насколько правильно. Напомним: о том, что было правильно, сколько я нашел. Обнаружение мошенничества способствует отзыву; спам-фильтры способствуют точности.
 
-**Explain overfitting and 4 ways to fight it.**
-More data · regularization (L1/L2, dropout) · early stopping · simpler model. Plus: proper train/test split hygiene.
+Объясните переобучение и 4 способа борьбы с ним.
+Больше данных · регуляризация (L1/L2, выбывание) · ранняя остановка · более простая модель. Плюс: надлежащая гигиена раздела поезда/теста.
 
-**What's a confusion matrix?**
-TP/FP/TN/FN grid — the source of precision, recall, F1.
+Что такое матрица путаницы?
+Сетка TP/FP/TN/FN — источник точности, напомним, F1.
 
-### Deep learning
+###Глубокое обучение
 
-**Why transformers beat RNNs?**
-Attention = parallelizable + long-range dependencies without vanishing gradient over distance. RNNs processed sequentially; transformers attend globally.
+Почему трансформаторы бьют RNN?
+Внимание = параллелизируемые + зависимости на большие расстояния без исчезающего градиента на расстояние. RNN обрабатываются последовательно; трансформаторы присутствуют во всем мире.
 
-**What is LoRA?**
-Low-rank adaptation — fine-tunes small injected matrices instead of the whole model: cheap, fast, composable adapters.
+Что такое LoRA?**
+Низкоуровневая адаптация — тонко настраиваемые маленькие впрыскиваемые матрицы вместо всей модели: дешевые, быстрые, композитные адаптеры.
 
-**RLHF?**
-Reward model trained on human preferences → RL (or DPO) aligns the LLM to them.
+** RLHF**
+Модель вознаграждения, обученная на человеческих предпочтениях → RL (или DPO) выравнивает LLM к ним.
 
-### LLM-specific
+### Специфика LLM
 
-**Temperature / top-p / top-k?**
-Sampling controls: temperature flattens/sharpens the distribution; top-p (nucleus) keeps the smallest probable set; top-k keeps k options. Lower = more deterministic.
+** Температура / top-p / top-k?**
+Контроль выборки: температура уплощает / замедляет распределение; верхний p (ядро) сохраняет наименьший вероятный набор; верхний k сохраняет k вариантов. Нижний = более детерминированный.
 
-**RAG vs fine-tuning?**
-RAG = give the model the answer's context at query time (updatable, cheap). FT = bake knowledge in (stable, expensive, risks forgetting). Often combined.
+RAG против тонкой настройки?
+RAG = дать модели контекст ответа во время запроса (обновляемый, дешевый). FT = выпечка знаний в (стабильный, дорогой, риск забывания). Часто сочетаются.
 
-**Hallucination — why and how to reduce?**
-Models predict plausible tokens, not truth. Reduce via RAG, constrained output, citations, low temperature, and "say 'I don't know' when unsure" prompts.
+Галлюцинация: почему и как ее уменьшить?
+Модели предсказывают правдоподобные токены, а не правду. Уменьшите через RAG, ограниченный выход, цитаты, низкую температуру и «скажите «Я не знаю», когда вы не уверены».
 
-### Practical
+###Практика
 
-**Your model is 99% accurate on imbalanced fraud data. Problem?**
-Accuracy is meaningless at 1% positives — check precision/recall/AUPRC, not accuracy.
+Ваша модель на 99% точна в отношении несбалансированных данных о мошенничестве. Проблема?**
+Точность не имеет смысла при 1% положительных результатов — проверяйте точность / вызов / AUPRC, а не точность.
 
-**Data leakage?**
-Information from the future/test set leaking into training — sneaky via preprocessing (scaling before split) or duplicated records.
+** Утечка данных? **
+Информация из будущего / тестового набора просачивается в обучение — скрытно через предварительную обработку (масштабирование перед разделением) или дублированные записи.
 
-## 🧪 Applied ML scenario questions
+##   Прикладные вопросы сценария ML
 
-**"Model accuracy dropped 10% overnight in prod. Debug."**
-→ Check data drift first (input distribution), then label pipeline changes, then a recent deploy. Add monitoring on feature distributions.
+** «Точность модели упала на 10% за ночь». Отладка.**
+Сначала проверьте дрейф данных (распределение ввода), затем измените конвейер метки, а затем недавнее развертывание. Добавьте мониторинг дистрибутивов функций.
 
-**"How do you handle 1% positive rate?"**
-→ Don't use accuracy. PR-AUC, class weights, resampling, threshold tuning, cost-sensitive losses. Anomaly-detection framing sometimes wins.
+«Как вы справляетесь с 1% положительной ставкой?»
+Не используйте точность. PR-AUC, вес класса, повторная выборка, пороговая настройка, чувствительные к затратам потери. Обнаружение аномалий иногда выигрывает.
 
-**"Train/val is fine but prod fails. Why?"**
-→ Train/serve skew: feature pipeline differences, label leakage in training, or time-based drift. Shadow-deploy to compare.
+**"Поезд/вал - это хорошо, но рывок проваливается". Почему?**
+Перекос поезда/обслуживания: различия в характеристиках трубопровода, утечка этикеток при обучении или дрейф на основе времени. Shadow-deploy для сравнения.
 
-## 🧮 Quick-fire theory
+Теория быстрого огня
 
-| Q | A |
+Q | Q |
 |---|---|
-| Bias-variance tradeoff? | Simple models underfit (bias), complex overfit (variance) |
-| Why softmax? | Differentiable argmax → probabilities |
-| L1 vs L2? | L1 → sparse weights; L2 → small weights |
-| What is dropout? | Random deactivation → ensemble effect |
-| Why normalize inputs? | Gradient symmetry → faster convergence |
+Простые модели (bias), сложные (variance)
+Почему softmax? Дифференцируемый argmax → вероятности
+L1 vs L2? | L1 → разреженные веса; L2 → небольшие веса
+Что такое выбывание? | Случайная деактивация → эффект ансамбля
+Зачем нормализовать входы? Градиентная симметрия → более быстрая конвергенция
 
-## 🤖 LLM interview questions (2025)
+Вопросы интервью LLM (2025)
 
-- How do you evaluate an LLM app? → Golden sets, LLM-judge, human evals
-- When fine-tune vs RAG? → RAG for facts, FT for style/format
-- What is RLHF? → Reward-model + PPO preference tuning
-- How to cut inference cost? → Quantize, distill, cache, smaller models
+Как вы оцениваете приложение LLM? Золотые наборы, LLM-судья, человеческие эвалы
+- Когда тонкая настройка против RAG? RAG для фактов, FT для стиля/формата
+- Что такое RLHF? Модель вознаграждения + настройка предпочтений PPO
+- Как снизить стоимость вывода? Quantize, distill, кэш, меньшие модели
 
 ---
 ## Участие
