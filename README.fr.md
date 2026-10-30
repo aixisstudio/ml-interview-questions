@@ -4,81 +4,79 @@
 
 Questions d'entretien ML/IA avec réponses types
 
-_Le contenu détaillé (listes, liens, descriptions) est en anglais pour rester maintenable — les sections ci-dessous te guident._
+Entretien avec les personnes atteintes de LM et de l'IA
 
-## 🎯 ML & AI interview Q&A
+Les fondamentaux
 
-### Fundamentals
+**Bais/variance d'échange?**
+Insuffisance = biais élevé (trop simple). Surfit = variance élevée (mémorise le bruit). La compétence est de trouver le milieu — la régularisation, plus de données, ou des modèles plus simples/complexes.
 
-**Bias/variance tradeoff?**
-Underfit = high bias (too simple). Overfit = high variance (memorizes noise). The skill is finding the middle — regularization, more data, or simpler/complexer models.
+**Précision ou rappel?**
+Précision: de ce que j'ai signalé, combien était juste. Rappel: de ce qui était juste, combien j'ai trouvé. La détection des fraudes favorise le rappel; les filtres antipourriel favorisent la précision.
 
-**Precision vs recall?**
-Precision: of what I flagged, how much was right. Recall: of what was right, how much I found. Fraud detection favors recall; spam filters favor precision.
+** Expliquez la suradéquation et 4 façons de la combattre.**
+Plus de données · régularisation (L1/L2, abandon) · arrêt précoce · modèle plus simple. En plus: bonne hygiène fractionnée train/test.
 
-**Explain overfitting and 4 ways to fight it.**
-More data · regularization (L1/L2, dropout) · early stopping · simpler model. Plus: proper train/test split hygiene.
+**Qu'est-ce qu'une matrice de confusion?**
+Grille TP/FP/TN/NF — source de précision, rappel, F1.
 
-**What's a confusion matrix?**
-TP/FP/TN/FN grid — the source of precision, recall, F1.
+Apprentissage profond
 
-### Deep learning
+**Pourquoi les transformateurs battent les RNN?**
+Attention = dépendances parallélisables + à longue distance sans perte de gradient sur la distance. Les RNN sont traitées de façon séquentielle; les transformateurs sont présents dans le monde entier.
 
-**Why transformers beat RNNs?**
-Attention = parallelizable + long-range dependencies without vanishing gradient over distance. RNNs processed sequentially; transformers attend globally.
+**Qu'est-ce que LoRA?**
+Adaptation de bas grades — petites matrices injectées fines au lieu de l'ensemble du modèle: adaptateurs bon marché, rapides et compacts.
 
-**What is LoRA?**
-Low-rank adaptation — fine-tunes small injected matrices instead of the whole model: cheap, fast, composable adapters.
+C'est quoi ?
+Modèle de récompense formé sur les préférences humaines → RL (ou DPO) aligne le LLM à eux.
 
-**RLHF?**
-Reward model trained on human preferences → RL (or DPO) aligns the LLM to them.
+Spécifique au LLM
 
-### LLM-specific
+**Température / top-p / top-k?**
+Contrôles d'échantillonnage: température plane/répartir la distribution; top-p (noyau) conserve le plus petit réglage probable; top-k conserve les options k. Moins = plus déterministe.
 
-**Temperature / top-p / top-k?**
-Sampling controls: temperature flattens/sharpens the distribution; top-p (nucleus) keeps the smallest probable set; top-k keeps k options. Lower = more deterministic.
+**RAG vs réglage fin?**
+RAG = donner au modèle le contexte de la réponse au moment de la requête (updatable, bon marché). FT = faire cuire la connaissance dans (stable, cher, risque d'oublier). Souvent combinés.
 
-**RAG vs fine-tuning?**
-RAG = give the model the answer's context at query time (updatable, cheap). FT = bake knowledge in (stable, expensive, risks forgetting). Often combined.
+**Hallucination — pourquoi et comment réduire?**
+Les modèles prédisent des jetons plausibles, pas la vérité. Réduire via RAG, la sortie limitée, les citations, la basse température, et "disons 'Je ne sais pas' quand on ne sait pas".
 
-**Hallucination — why and how to reduce?**
-Models predict plausible tokens, not truth. Reduce via RAG, constrained output, citations, low temperature, and "say 'I don't know' when unsure" prompts.
+Pratique
 
-### Practical
+**Votre modèle est précis à 99 % sur les données de fraude déséquilibrées. Problème?**
+L'exactitude n'a pas de sens à 1% de positifs — vérifier la précision/rappel/AUPRC, pas la précision.
 
-**Your model is 99% accurate on imbalanced fraud data. Problem?**
-Accuracy is meaningless at 1% positives — check precision/recall/AUPRC, not accuracy.
+**La fuite de données?**
+L'information provenant de l'ensemble futur/essai s'infiltre dans la formation — sournoisement par prétraitement (scalage avant scission) ou dupliqués.
 
-**Data leakage?**
-Information from the future/test set leaking into training — sneaky via preprocessing (scaling before split) or duplicated records.
+Questions appliquées sur le scénario ML
 
-## 🧪 Applied ML scenario questions
+**"La précision du modèle a chuté de 10 % pendant la nuit en prod. Déboguer."**
+→ Vérifiez d'abord la dérive des données (distribution des entrées), puis marquez les changements de pipeline, puis un déploiement récent. Ajouter une surveillance sur les distributions de fonctionnalités.
 
-**"Model accuracy dropped 10% overnight in prod. Debug."**
-→ Check data drift first (input distribution), then label pipeline changes, then a recent deploy. Add monitoring on feature distributions.
+**« Comment traitez-vous le taux positif de 1%? »**
+→ N'utilisez pas la précision. PR-AUC, poids de classe, rééchantillonnage, réglage des seuils, pertes sensibles aux coûts. Le cadrage de détection d'anomalie gagne parfois.
 
-**"How do you handle 1% positive rate?"**
-→ Don't use accuracy. PR-AUC, class weights, resampling, threshold tuning, cost-sensitive losses. Anomaly-detection framing sometimes wins.
+**"Train/val est bon mais prod échoue. Pourquoi ?"**
+→ Tranche train/serve : différences de pipeline, fuite d'étiquettes dans l'entraînement ou dérive temporelle. Shadow-déploy à comparer.
 
-**"Train/val is fine but prod fails. Why?"**
-→ Train/serve skew: feature pipeline differences, label leakage in training, or time-based drift. Shadow-deploy to compare.
+Théorie du feu rapide
 
-## 🧮 Quick-fire theory
-
-| Q | A |
+D'après les informations fournies par l'État membre concerné
 |---|---|
-| Bias-variance tradeoff? | Simple models underfit (bias), complex overfit (variance) |
-| Why softmax? | Differentiable argmax → probabilities |
-| L1 vs L2? | L1 → sparse weights; L2 → small weights |
-| What is dropout? | Random deactivation → ensemble effect |
-| Why normalize inputs? | Gradient symmetry → faster convergence |
+Un compromis entre la diversité et la diversité?
+Pourquoi softmax ? Une argmax différente → probabilités
+L1 contre L2?L1 → poids clairsemés; L2 → petits poids
+Qu'est-ce que l'abandon? Désactivation aléatoire → effet d'ensemble
+Pourquoi normaliser les intrants? Symétrie progressive → convergence plus rapide
 
-## 🤖 LLM interview questions (2025)
+Questions d'entrevue (2025)
 
-- How do you evaluate an LLM app? → Golden sets, LLM-judge, human evals
-- When fine-tune vs RAG? → RAG for facts, FT for style/format
-- What is RLHF? → Reward-model + PPO preference tuning
-- How to cut inference cost? → Quantize, distill, cache, smaller models
+- Comment évaluez-vous une application LLM ? → Ensembles d'or, Juge LLM, Evales humaines
+- Quand fine-tune vs RAG ? → RAG pour les faits, FT pour le style/format
+- Qu'est-ce que RLHF ? → Calibrage préférentiel du modèle de récompense + PPO
+- Comment réduire les coûts d'inférence ? → Quantité, distill, cache, modèles plus petits
 
 ---
 ## Contribuer
