@@ -4,81 +4,79 @@
 
 机器学习面试问答集
 
-_详细内容（列表、链接、描述）以英文维护 — 以下章节为你指引。_
+####ML & AI访谈###A
 
-## 🎯 ML & AI interview Q&A
+* 基本要素
 
-### Fundamentals
+** 区别/差异权衡? **
+underfit = 高偏差(太简单). 过度适应=高度差异(产生噪音)。 技能是找到中间——规范化,更多数据,或更简单/复杂的模型.
 
-**Bias/variance tradeoff?**
-Underfit = high bias (too simple). Overfit = high variance (memorizes noise). The skill is finding the middle — regularization, more data, or simpler/complexer models.
+** 准确性与回忆? **
+精确的说: 我所标注的东西, 有多少是正确的。 记得:什么是正确的,我找到了多少。 欺诈检测有利于召回;垃圾邮件过滤有利于精确。
 
-**Precision vs recall?**
-Precision: of what I flagged, how much was right. Recall: of what was right, how much I found. Fraud detection favors recall; spam filters favor precision.
+** 解释过度适应和4种与之斗争的方法。 **
+更多的数据 正规化(L1/L2,辍学) 早期停止 更简单的模式。 加:适当的火车/测试分卫生.
 
-**Explain overfitting and 4 ways to fight it.**
-More data · regularization (L1/L2, dropout) · early stopping · simpler model. Plus: proper train/test split hygiene.
+** 什么是混淆矩阵? **
+TP/FP/TN/FN网格——精度的来源,召回,F1.
 
-**What's a confusion matrix?**
-TP/FP/TN/FN grid — the source of precision, recall, F1.
+深入学习
 
-### Deep learning
+*为什么变压器会击败RNNs*
+注意 = 并行 + 长距离依赖,不因距离而消失梯度。 按顺序处理的RNN;变压器在全球参加。
 
-**Why transformers beat RNNs?**
-Attention = parallelizable + long-range dependencies without vanishing gradient over distance. RNNs processed sequentially; transformers attend globally.
+萝拉是什么?
+低等级的适应——微调小的注射式矩阵代替整个模型:廉价,快速,可堆肥的适应器.
 
-**What is LoRA?**
-Low-rank adaptation — fine-tunes small injected matrices instead of the whole model: cheap, fast, composable adapters.
+** 高频? **
+接受过人类偏好培训的奖励模式 → RL(或DPO)将LLM与它们一致.
 
-**RLHF?**
-Reward model trained on human preferences → RL (or DPO) aligns the LLM to them.
+* 特定LLM
 
-### LLM-specific
+** Temperature / top -p / top -k? ** 时间轴:
+采样控制:温度平坦/分解分布;顶端-p(核)保持最小的可能设置;顶端-k保持 k选项. 下层=更具决定力.
 
-**Temperature / top-p / top-k?**
-Sampling controls: temperature flattens/sharpens the distribution; top-p (nucleus) keeps the smallest probable set; top-k keeps k options. Lower = more deterministic.
+** RAG对微调? **
+RAG = 在查询时间给模型上下文(更新,便宜). FT=烘焙知识(稳定、昂贵、风险被遗忘)。 经常是合并的。
 
-**RAG vs fine-tuning?**
-RAG = give the model the answer's context at query time (updatable, cheap). FT = bake knowledge in (stable, expensive, risks forgetting). Often combined.
+** 沮丧——为什么和如何减少? **
+模型可以预测出可信的征兆,而不是真相. 减少通过RAG, 限制输出, 引用,低温, 和"说'我不知道' 当不确定"提示。
 
-**Hallucination — why and how to reduce?**
-Models predict plausible tokens, not truth. Reduce via RAG, constrained output, citations, low temperature, and "say 'I don't know' when unsure" prompts.
+实际
 
-### Practical
+** 你的模型对不平衡的欺诈数据准确度为99%。 问题? **
+准确性在1%的正值上是毫无意义的——检查精度/召回/AUPRC,而不是准确性.
 
-**Your model is 99% accurate on imbalanced fraud data. Problem?**
-Accuracy is meaningless at 1% positives — check precision/recall/AUPRC, not accuracy.
+数据泄漏? **
+来自未来/测试集的信息泄露到训练中——通过预处理(分拆前的缩放)或重复记录偷偷摸摸.
 
-**Data leakage?**
-Information from the future/test set leaking into training — sneaky via preprocessing (scaling before split) or duplicated records.
+□ □ 应用 ML 假想问题
 
-## 🧪 Applied ML scenario questions
+**"模型精度一夜之间就下降了10%. 调试。 **
+——先检查数据漂移(输入分布),然后标注管道变化,然后是最近部署. 添加对特征分布的监测。
 
-**"Model accuracy dropped 10% overnight in prod. Debug."**
-→ Check data drift first (input distribution), then label pipeline changes, then a recent deploy. Add monitoring on feature distributions.
+**"你如何处理1%的正率?"**
+-别用精确度 PR-AUC,类重,复标,阈值调谐,成本敏感损失. 异常检测框架有时会获胜.
 
-**"How do you handle 1% positive rate?"**
-→ Don't use accuracy. PR-AUC, class weights, resampling, threshold tuning, cost-sensitive losses. Anomaly-detection framing sometimes wins.
+**"火车/Val是好的,但prod故障. 为什么?"**
+● 火车/服务车厢:有特色的管道差异,在训练中贴上泄漏标签,或按时间漂移。 影子行动来比较。
 
-**"Train/val is fine but prod fails. Why?"**
-→ Train/serve skew: feature pipeline differences, label leakage in training, or time-based drift. Shadow-deploy to compare.
+###QQ快火理论
 
-## 🧮 Quick-fire theory
-
-| Q | A |
+{\fn黑体\fs22\bord1\shad0\3aHBE\4aH00\fscx67\fscy66\2cHFFFFFF\3cH808080}你是谁?
 |---|---|
-| Bias-variance tradeoff? | Simple models underfit (bias), complex overfit (variance) |
-| Why softmax? | Differentiable argmax → probabilities |
-| L1 vs L2? | L1 → sparse weights; L2 → small weights |
-| What is dropout? | Random deactivation → ensemble effect |
-| Why normalize inputs? | Gradient symmetry → faster convergence |
+{\fn黑体\fs22\bord1\shad0\3aHBE\4aH00\fscx67\fscy66\2cHFFFFFF\3cH808080}比亚斯变异的权衡? {\fn黑体\fs22\bord1\shad0\3aHBE\4aH00\fscx67\fscy66\2cHFFFFFF\3cH808080}比亚斯变异的权衡?
+为什么是软的? 可区分参数 概率
+L1 vs L2? L1 → 零重量; L2 → 小重量
+什么是退学? 随机失能 − 共聚效应
+* * * 为什么要使投入正常化? 渐变对称 更快的趋同
 
-## 🤖 LLM interview questions (2025)
+####LLM采访问题(2025).
 
-- How do you evaluate an LLM app? → Golden sets, LLM-judge, human evals
-- When fine-tune vs RAG? → RAG for facts, FT for style/format
-- What is RLHF? → Reward-model + PPO preference tuning
-- How to cut inference cost? → Quantize, distill, cache, smaller models
+- 你怎么评价LLM应用? • 黄金套装、LLM法官、人机
+- 当微调对RAG? + 事实法、风格法/格式法
+- 什么是高频? + 奖励模式+ PPO 偏好调制
+- 如何削减推论成本? • 量化、蒸馏、缓存、较小的模型
 
 ---
 ## 贡献
