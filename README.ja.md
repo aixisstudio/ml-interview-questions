@@ -4,81 +4,79 @@
 
 ML 面接の質問と回答
 
-_詳細なコンテンツ（リスト・リンク・説明）は保守のため英語です。以下のセクションがガイドになります。_
+## 最近の投稿 ML & AI インタビュー Q&A
 
-## 🎯 ML & AI interview Q&A
+##基本
 
-### Fundamentals
+**バイアス/バランストレードオフ?**
+アンダーフィット=ハイバイアス(シンプル)。 オーバーフィット=高分散(ノイズを記憶する)。 スキルは、ミドル — 正規化、より多くのデータ、または単純/複雑なモデルを見つけることです。
 
-**Bias/variance tradeoff?**
-Underfit = high bias (too simple). Overfit = high variance (memorizes noise). The skill is finding the middle — regularization, more data, or simpler/complexer models.
+**精密対リコール?**
+精度:私が強調したものの、どれだけのものが正しいか。 Recall: 何が正しいか、私が見つけた量。 詐欺検出はリコールを支持します;スパム フィルター好意の精密。
 
-**Precision vs recall?**
-Precision: of what I flagged, how much was right. Recall: of what was right, how much I found. Fraud detection favors recall; spam filters favor precision.
+**オーバーフィットと戦う4つの方法を説明する。**
+より多くのデータ・正規化(L1/L2、ドロップアウト)・初期停止・簡易モデル。 プラス:適切な列車/テスト分割衛生。
 
-**Explain overfitting and 4 ways to fight it.**
-More data · regularization (L1/L2, dropout) · early stopping · simpler model. Plus: proper train/test split hygiene.
+**混乱行列とは?**
+TP/FP/TN/FN グリッド — 精密、リコール、F1 のソース。
 
-**What's a confusion matrix?**
-TP/FP/TN/FN grid — the source of precision, recall, F1.
+##ディープラーニング
 
-### Deep learning
+**変圧器がRNNを打つのはなぜですか?**
+注意: 並列 = 設定可能 + 距離上の勾配をバニシングせずに長距離の依存関係. RNNs は順次処理し、変圧器はグローバルに出席します。
 
-**Why transformers beat RNNs?**
-Attention = parallelizable + long-range dependencies without vanishing gradient over distance. RNNs processed sequentially; transformers attend globally.
+**LoRAとは?**
+低ランクの適応 — 全モデルの代わりに小さな注入されたマトリックスを微調整します:格安、高速、互換性のあるアダプタ。
 
-**What is LoRA?**
-Low-rank adaptation — fine-tunes small injected matrices instead of the whole model: cheap, fast, composable adapters.
+**RLHFか。**
+人間の好み→ RL (またはDPO)で訓練されたモデルは、LMをそれらに合わせます。
 
-**RLHF?**
-Reward model trained on human preferences → RL (or DPO) aligns the LLM to them.
+## LLM 固有の
 
-### LLM-specific
+**温度/トップp/トップk?**
+サンプリング制御:温度フラットテン/シャープ分布;トップp(nucleus)は最小の確率セットを保持します。トップkはkオプションを保持します。 より低い=より決定的。
 
-**Temperature / top-p / top-k?**
-Sampling controls: temperature flattens/sharpens the distribution; top-p (nucleus) keeps the smallest probable set; top-k keeps k options. Lower = more deterministic.
+**RAGと微調整?**
+RAG = 回答の文脈をクエリ時間(上書き可能、安い)でモデルに与えます。 FT = 知識を焼く (安定的、高価、リスクを忘れる)。 結合される多くの場合。
 
-**RAG vs fine-tuning?**
-RAG = give the model the answer's context at query time (updatable, cheap). FT = bake knowledge in (stable, expensive, risks forgetting). Often combined.
+**解散 — 理由と削減方法?**
+モデルは、真実ではなく、盗用トークンを予測します。 RAG、制約された出力、引用、低温、および「未保証」プロンプトで削減します。
 
-**Hallucination — why and how to reduce?**
-Models predict plausible tokens, not truth. Reduce via RAG, constrained output, citations, low temperature, and "say 'I don't know' when unsure" prompts.
+#### 実用的
 
-### Practical
+**不均衡な不正データのモデルが99%正確です。 問題?**
+精度は1%のポジショナで意味がありません。精度/リコール/AUPRCは、精度ではなくチェックします。
 
-**Your model is 99% accurate on imbalanced fraud data. Problem?**
-Accuracy is meaningless at 1% positives — check precision/recall/AUPRC, not accuracy.
+**データ漏洩?**
+将来の/テストセットから漏れるトレーニング - プリプロセッシング(分割前のスケーリング)または重複したレコードを介して絞り込む。
 
-**Data leakage?**
-Information from the future/test set leaking into training — sneaky via preprocessing (scaling before split) or duplicated records.
+## 🧪 応用MLシナリオ質問
 
-## 🧪 Applied ML scenario questions
+**「モデル精度は、プロドで一晩に10%を低下させました。 デバッグ**
+→ データドリフトを最初にチェック(入力分布)し、パイプラインの変更をラベルを付けて、最近のデプロイを行います。 機能分布の監視を追加します。
 
-**"Model accuracy dropped 10% overnight in prod. Debug."**
-→ Check data drift first (input distribution), then label pipeline changes, then a recent deploy. Add monitoring on feature distributions.
+**「1%プラスレートの処理方法は?」**
+→ 精度は使用しないでください。 PR-AUC、クラス重量、リサンプリング、しきい値調整、コスト感度損失。 Anomaly-detection framing 時々 勝つ。
 
-**"How do you handle 1% positive rate?"**
-→ Don't use accuracy. PR-AUC, class weights, resampling, threshold tuning, cost-sensitive losses. Anomaly-detection framing sometimes wins.
+**「電車/ヴァルは罰金が科せられるが、失敗する。 お問い合わせ
+→ 訓練/サーブスキュー:機能パイプラインの相違、訓練のラベルの漏出、または時間ベースの漂流。 Shadow-deploy を比較します。
 
-**"Train/val is fine but prod fails. Why?"**
-→ Train/serve skew: feature pipeline differences, label leakage in training, or time-based drift. Shadow-deploy to compare.
+## 🧮 速火理論
 
-## 🧮 Quick-fire theory
-
-| Q | A |
+| お問い合わせ |
 |---|---|
-| Bias-variance tradeoff? | Simple models underfit (bias), complex overfit (variance) |
-| Why softmax? | Differentiable argmax → probabilities |
-| L1 vs L2? | L1 → sparse weights; L2 → small weights |
-| What is dropout? | Random deactivation → ensemble effect |
-| Why normalize inputs? | Gradient symmetry → faster convergence |
+| Bias-varianceトレードオフ? | シンプルモデル・アンダーフィット(バイアス)・複雑オーバーフィット(バイアス) |
+| ソフトマックスとは? | 異なるargmax → 確率 |
+| L1 対 L2 ? | L1 → スペーサー重量L2 → 体重が小さい |
+| ドロップアウトとは? | ランダム非アクティブ化→アンサンブル効果 |
+| 入力を正規化する理由 | グラデーション対称 → より速い会話 |
 
-## 🤖 LLM interview questions (2025)
+## ✔ LLM 面接質問 (2025)
 
-- How do you evaluate an LLM app? → Golden sets, LLM-judge, human evals
-- When fine-tune vs RAG? → RAG for facts, FT for style/format
-- What is RLHF? → Reward-model + PPO preference tuning
-- How to cut inference cost? → Quantize, distill, cache, smaller models
+- LLMアプリの評価方法は? → ゴールデンセット, LLM-judge, 人間の楕円形
+- 微調整対RAG? →事実のためのRAG、スタイル/フォーマットのためのFT
+- RLHFとは? → Reward-model + PPO 設定チューニング
+- 推圧コストを削減する方法? → Quantize、distill、キャッシュ、より小さいモデル
 
 ---
 ## 貢献
